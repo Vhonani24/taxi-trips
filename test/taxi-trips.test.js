@@ -19,9 +19,9 @@ describe('Taxi Trips', function () {
 
         const taxiTrips = TaxiTrips(pool);
 
-        //console.log(await taxiTrips.totalTripCount());
+        console.log(await taxiTrips.totalTripCount());
 
-        assert.deepEqual(6, await taxiTrips.totalTripCount());
+        assert.deepEqual([{ sum: '21' }], await taxiTrips.totalTripCount());
 
 
     });
