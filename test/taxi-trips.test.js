@@ -21,7 +21,7 @@ describe('Taxi Trips', function () {
 
         //console.log(await taxiTrips.totalTripCount());
 
-        assert.deepEqual([{ sum: '15' }], await taxiTrips.totalTripCount());
+        assert.deepEqual(6, await taxiTrips.totalTripCount());
 
 
     });
@@ -84,31 +84,47 @@ describe('Taxi Trips', function () {
 
         console.log(await taxiTrips.findTripsByRegion('Cape Town'));
 
-        //assert.deepStrictEqual([], taxiTrips.findTripsByRegion('Cape Town').length);
-        //assert.deepStrictEqual([], taxiTrips.findTripsByRegion('Gauteng').length);
-        //assert.deepStrictEqual([], taxiTrips.findTripsByRegion('Gauteng').length);
+        assert.deepEqual(2, await taxiTrips.findTripsByRegion('Cape Town'));
+        assert.deepStrictEqual(3, await taxiTrips.findTripsByRegion('Gauteng'));
+        assert.deepStrictEqual(1, await taxiTrips.findTripsByRegion('Durban'));
 
     });
 
-    /*it('find the total income for a given reg number', async function () {
+    it('find the total income for a given reg number', async function () {
 
         const taxiTrips = TaxiTrips(pool);
-        assert.deepStrictEqual(0, taxiTrips.findIncomeByRegNumber('...').length);
-        assert.deepStrictEqual(0, taxiTrips.findIncomeByRegNumber('***').length);
+
+
+        console.log(await taxiTrips.findIncomeByRegNumber('GP 123 000'));
+        assert.deepStrictEqual([{ fare: '50.00' }, { fare: '50.00' }, { fare: '35.00' }]
+            , await taxiTrips.findIncomeByRegNumber('GP 123 000'));
+        assert.deepStrictEqual([{ fare: '23.00' }, { fare: '180.00' }], await taxiTrips.findIncomeByRegNumber('CA 123 456'));
 
     });
 
-    it('find the total income for each taxi', async function () {
+    it('find the total income per taxi', async function () {
 
         const taxiTrips = TaxiTrips(pool);
-        assert.deepStrictEqual([{}, {}, {}], taxiTrips.findTotalIncomePerTaxi());
+
+        //console.log(await taxiTrips.findTotalIncomePerTaxi('GP 123 000'));
+        assert.deepEqual([{sum:'135.00'}], await taxiTrips.findTotalIncomePerTaxi('GP 123 000'));
 
     });
 
-    it('find the total income for all the taxis', async function () {
+    it('Find the total amount received in income for all the taxis', async function () {
         const taxiTrips = TaxiTrips(pool);
-        assert.deepStrictEqual(0.00, taxiTrips.findTotalIncome());
-    });*/
+
+        //console.log(await taxiTrips.findTotalIncome());
+        assert.deepEqual([{sum: '398.00'}], await taxiTrips.findTotalIncome());
+    });
+
+    it('Find the total amount income for each of the regions', async function () {
+        const taxiTrips = TaxiTrips(pool);
+
+        console.log(await taxiTrips.findTotalIncomeByRegion('Gauteng'));
+        assert.deepEqual([{sum: '135.00'}], await taxiTrips.findTotalIncomeByRegion('Gauteng'));
+    });
+
 
 
     after(function () {
